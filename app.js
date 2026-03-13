@@ -649,9 +649,15 @@ function renderHand({ animateDeal = true } = {}){
       if (!cardEl) return;
       const slotEl = cardEl.parentElement; // .cardSlot
       const t = i - mid;
-      const x = t * spreadX;
+      let x = t * spreadX;
       const a = t * anglePer;
       const y = Math.abs(t) * arcLift;
+
+      // Clamp X so the fan never overflows the container (iOS portrait tends to exaggerate widths)
+      const handW = el.hand?.clientWidth || 0;
+      const slotW = isMobilePortrait ? 90 : 96;
+      const maxX = handW ? Math.max(0, (handW - slotW) / 2) : 9999;
+      x = Math.max(-maxX, Math.min(maxX, x));
 
       if (slotEl){
         slotEl.style.setProperty('--x', `${x}px`);

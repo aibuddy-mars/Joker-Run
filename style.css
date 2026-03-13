@@ -512,6 +512,8 @@ button.ghost{background:transparent}
 /* Mobile portrait tuning: avoid overlap, keep actions near hand */
 @media (max-width: 720px) and (orientation: portrait){
   body{ padding-bottom: 152px; }
+  /* prevent horizontal scrollbars on iOS */
+  .table{ overflow:hidden; }
 
   .topBar{ padding: 10px 12px 6px; gap: 8px; }
   .title{ font-size: 16px; }
