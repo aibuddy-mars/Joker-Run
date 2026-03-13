@@ -484,5 +484,60 @@ button.ghost{background:transparent}
   .hud{grid-template-columns: repeat(2, minmax(0,1fr));}
   .layout{grid-template-columns: 1fr;}
   .side{min-height:auto}
-  .actions{position:sticky; top:0; z-index:20}
+}
+
+/* Mobile portrait tuning: avoid overlap, keep actions near hand */
+@media (max-width: 720px) and (orientation: portrait){
+  body{ padding-bottom: 92px; }
+
+  .topBar{ padding: 10px 12px 6px; gap: 8px; }
+  .title{ font-size: 16px; }
+  .sub{ font-size: 12px; }
+
+  /* Stack sections in a sensible reading order */
+  .layout{
+    padding: 8px 12px 12px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "table"
+      "shop"
+      "jokers";
+  }
+  .table{ grid-area: table; padding: 12px; }
+  .side.right{ grid-area: shop; }
+  .side.left{ grid-area: jokers; }
+
+  /* Hand area: reduce vertical drift + prevent cards from covering the log */
+  .handFan{
+    height: 190px;
+    overflow: hidden;
+  }
+  .handFan .cardSlot{ top: 44px; width: 92px; height: 136px; }
+  .handFan .card{ top: 0; transform-origin: 50% 130px; }
+
+  .log{
+    min-height: 96px;
+    max-height: 160px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Put action buttons at the bottom so they're close to the cards */
+  .actions{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px 10px;
+    gap: 8px;
+    justify-content: space-between;
+    background: rgba(11,16,32,.88);
+    border-top: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(10px);
+    z-index: 80;
+  }
+  .actions button{ flex: 1 1 auto; padding: 10px 10px; }
+
+  /* Toast sits above the fixed action bar */
+  .toastWrap{ bottom: 104px; }
 }
