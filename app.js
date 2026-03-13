@@ -625,59 +625,35 @@ function renderHand({ animateDeal = true } = {}){
   });
 
   // Fan layout: spread cards with X offset + slight rotation
+  // DouDiZhu-style overlap: stacking order is fixed (right card covers left), even when selected.
   if (el.hand && el.hand.classList.contains('handFan')){
     const n = state.hand.length;
     const mid = (n - 1) / 2;
 
     const isMobilePortrait = window.matchMedia && window.matchMedia('(max-width: 720px) and (orientation: portrait)').matches;
 
-    // Tuneables (feel free to tweak after you look)
-    // Wider spacing to reduce overlap on mobile.
     const spreadXBase = n <= 6 ? 30 : n <= 8 ? 26 : 22; // px between cards
     const spreadX = spreadXBase + (isMobilePortrait ? 10 : 0);
 
     const anglePerBase = n <= 6 ? 5 : n <= 8 ? 4 : 3;   // deg per step
     const anglePer = Math.max(1.5, anglePerBase - (isMobilePortrait ? 1.2 : 0));
 
-    const arcLift = isMobilePortrait ? 1.8 : 2.6;       // px lift per step away from center
-
-    const selectedIdx = state.hand
-      .map((c, i) => state.selected.has(c.id) ? i : -1)
-      .filter(i => i >= 0);
-
-    const pushUnit = isMobilePortrait ? 8 : 4; // px
-    const pushCap = isMobilePortrait ? 28 : 18;
+    const arcLift = isMobilePortrait ? 1.8 : 2.6;
 
     state.hand.forEach((c, i) => {
       const cardEl = ui.handCardEls.get(c.id);
       if (!cardEl) return;
       const slotEl = cardEl.parentElement; // .cardSlot
       const t = i - mid;
-
-      // Base fan layout
-      let x = t * spreadX;
+      const x = t * spreadX;
       const a = t * anglePer;
       const y = Math.abs(t) * arcLift;
 
-      // If there are selected cards, create small gaps so selected cards don't cover neighbors.
-      if (selectedIdx.length){
-        let extra = 0;
-        for (const s of selectedIdx){
-          if (i < s) extra -= pushUnit;
-          else if (i > s) extra += pushUnit;
-        }
-        extra = Math.max(-pushCap, Math.min(pushCap, extra));
-        x += extra;
-      }
-
-      // layout vars live on the slot (stable hitbox)
       if (slotEl){
         slotEl.style.setProperty('--x', `${x}px`);
-        const baseZ = 200 + Math.floor(100 - Math.abs(t) * 5) + i;
-        slotEl.style.zIndex = String(baseZ + (state.selected.has(c.id) ? 200 : 0));
+        slotEl.style.zIndex = String(100 + i); // fixed stacking: right > left
       }
 
-      // visual vars live on the card
       cardEl.style.setProperty('--y', `${y}px`);
       cardEl.style.setProperty('--a', `${a}deg`);
       cardEl.style.setProperty('--lift', '0px');
