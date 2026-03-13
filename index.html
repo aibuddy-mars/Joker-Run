@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Joker Run</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topBar">
+    <div class="brand">
+      <div class="title">Joker Run（原型）</div>
+      <div class="sub">选择最多 5 张牌出牌，打到目标分数。过关后进商店买小丑牌。</div>
+    </div>
+
+    <div class="hud" aria-label="对局信息">
+      <div class="hudItem"><span class="k">回合</span><span id="round" class="v">1</span></div>
+      <div class="hudItem"><span class="k">盲注</span><span id="blind" class="v">小盲</span></div>
+      <div class="hudItem"><span class="k">目标</span><span id="target" class="v">300</span></div>
+      <div class="hudItem"><span class="k">得分</span><span id="score" class="v">0</span></div>
+      <div class="hudItem"><span class="k">金币</span><span id="money" class="v">$0</span></div>
+      <div class="hudItem"><span class="k">手牌</span><span id="handSize" class="v">0</span></div>
+      <div class="hudItem"><span class="k">牌库</span><span id="deckSize" class="v">0</span></div>
+      <div class="hudItem"><span class="k">弃牌</span><span id="discardSize" class="v">0</span></div>
+    </div>
+
+    <div class="actions" aria-label="操作">
+      <button id="btnDraw">补牌到 8</button>
+      <button id="btnPlay" class="primary">出牌（最多 5）</button>
+      <button id="btnDiscard">弃牌（最多 5）</button>
+      <button id="btnEnd">结束回合</button>
+      <button id="btnNew" class="ghost">新开一局</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="side left">
+      <div class="sideTitle">已拥有小丑牌</div>
+      <div id="jokers" class="jokers"></div>
+    </aside>
+
+    <section class="table" aria-label="牌桌">
+      <div class="tableInner">
+        <div class="label">手牌</div>
+        <div id="hand" class="handFan"></div>
+
+        <div class="label">本次结算</div>
+        <div id="log" class="log" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <aside class="side right">
+      <div class="shopHeader">
+        <div class="sideTitle" style="margin:0">商店</div>
+        <div class="shopBtns">
+          <button id="btnReroll">刷新（-$2）</button>
+          <button id="btnContinue" class="primary">继续下一关</button>
+        </div>
+      </div>
+      <div id="shop" class="shop"></div>
+
+      <div class="hint">
+        <div class="h">说明（MVP 简化）</div>
+        <ul>
+          <li>计分 = （基础筹码 + 牌面点数之和 + 小丑筹码） × （基础倍率 + 小丑倍率）。</li>
+          <li>每回合可多次出牌/弃牌，点「结束回合」会重置分数（简化）。</li>
+          <li>过关奖励金币：小盲 +$4，大盲 +$6，Boss +$10；每次出牌额外 +$1。</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="muted">原型仅用于快速验证玩法。后续可重做 UI、加稀有度/特效/微信适配。</div>
+  </footer>
+
+  <script src="app.js?v=4"></script>
+</body>
+</html>
