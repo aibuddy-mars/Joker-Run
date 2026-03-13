@@ -509,11 +509,11 @@ button.ghost{background:transparent}
 
   /* Hand area: reduce vertical drift + prevent cards from covering the log */
   .handFan{
-    height: 190px;
+    height: 168px;
     overflow: hidden;
   }
-  .handFan .cardSlot{ top: 44px; width: 92px; height: 136px; }
-  .handFan .card{ top: 0; transform-origin: 50% 130px; }
+  .handFan .cardSlot{ top: 32px; width: 90px; height: 132px; }
+  .handFan .card{ top: 0; transform-origin: 50% 126px; }
 
   .log{
     min-height: 96px;
@@ -531,12 +531,15 @@ button.ghost{background:transparent}
     padding: 10px 10px;
     gap: 8px;
     justify-content: space-between;
+    flex-wrap: wrap;
     background: rgba(11,16,32,.88);
     border-top: 1px solid rgba(255,255,255,.12);
     backdrop-filter: blur(10px);
     z-index: 80;
   }
-  .actions button{ flex: 1 1 auto; padding: 10px 10px; }
+  /* 5 buttons on mobile: allow 2 rows */
+  .actions button{ flex: 1 0 46%; padding: 10px 10px; }
+  .actions button.primary{ flex-basis: 100%; }
 
   /* Toast sits above the fixed action bar */
   .toastWrap{ bottom: 104px; }
