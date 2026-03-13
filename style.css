@@ -145,8 +145,8 @@ button.ghost{background:transparent}
   position:absolute;
   left:50%;
   top:64px;
-  width: 96px;   /* slightly larger than card (86px) */
-  height: 140px; /* slightly larger than card (120px) */
+  width: var(--hitW, 96px);   /* hitbox width (mobile may shrink to exposed strip) */
+  height: 140px;             /* slightly larger than card (120px) */
   transform: translateX(calc(-50% + var(--x, 0px)));
 }
 
@@ -537,7 +537,7 @@ button.ghost{background:transparent}
     height: 168px;
     overflow: visible; /* prevent selected cards from being clipped ("disappear") */
   }
-  .handFan .cardSlot{ top: 36px; width: 90px; height: 132px; }
+  .handFan .cardSlot{ top: 36px; width: var(--hitW, 90px); height: 132px; }
   .handFan .card{ top: 0; transform-origin: 50% 126px; }
 
   .log{
