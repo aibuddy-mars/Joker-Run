@@ -653,10 +653,12 @@ function renderHand({ animateDeal = true } = {}){
       const a = t * anglePer;
       const y = Math.abs(t) * arcLift;
 
-      // Clamp X so the fan never overflows the container (iOS portrait tends to exaggerate widths)
-      const handW = el.hand?.clientWidth || 0;
+      // Clamp X so the fan never overflows the viewport/container (iOS portrait can exaggerate widths)
       const slotW = isMobilePortrait ? 90 : 96;
-      const maxX = handW ? Math.max(0, (handW - slotW) / 2) : 9999;
+      const handW = el.hand?.getBoundingClientRect?.().width || el.hand?.clientWidth || 0;
+      const vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth || 0) || handW || 0;
+      const safeW = Math.max(0, (handW || vw) - 24); // keep some side padding
+      const maxX = safeW ? Math.max(0, (safeW - slotW) / 2) : 180;
       x = Math.max(-maxX, Math.min(maxX, x));
 
       if (slotEl){

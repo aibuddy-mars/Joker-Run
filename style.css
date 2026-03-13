@@ -12,6 +12,7 @@
   --border:rgba(255,255,255,.12);
 }
 *{box-sizing:border-box}
+html, body{ overflow-x:hidden; }
 body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -535,9 +536,9 @@ button.ghost{background:transparent}
   /* Hand area: reduce vertical drift + prevent cards from covering the log */
   .handFan{
     height: 168px;
-    overflow: hidden;
+    overflow: visible; /* prevent selected cards from being clipped ("disappear") */
   }
-  .handFan .cardSlot{ top: 32px; width: 90px; height: 132px; }
+  .handFan .cardSlot{ top: 36px; width: 90px; height: 132px; }
   .handFan .card{ top: 0; transform-origin: 50% 126px; }
 
   .log{
