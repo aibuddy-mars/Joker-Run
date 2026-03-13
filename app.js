@@ -611,7 +611,11 @@ function renderHand({ animateDeal = true } = {}){
         state.selected.delete(c.id);
         log('最多选择 5 张牌');
       }
-      renderHand({ animateDeal: false });
+
+      // Do NOT re-render the whole hand on selection.
+      // Rebuilding DOM makes every card animate/"jump" on desktop.
+      div.classList.toggle('selected', state.selected.has(c.id));
+      el.hand.classList.toggle('hasSelection', state.selected.size > 0);
       renderStats();
     };
 
