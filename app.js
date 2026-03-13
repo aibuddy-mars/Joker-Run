@@ -628,11 +628,17 @@ function renderHand({ animateDeal = true } = {}){
     const n = state.hand.length;
     const mid = (n - 1) / 2;
 
+    const isMobilePortrait = window.matchMedia && window.matchMedia('(max-width: 720px) and (orientation: portrait)').matches;
+
     // Tuneables (feel free to tweak after you look)
-    // Wider spacing to reduce hover-flicker from overlapping hitboxes.
-    const spreadX = n <= 6 ? 30 : n <= 8 ? 26 : 22; // px between cards
-    const anglePer = n <= 6 ? 5 : n <= 8 ? 4 : 3;   // deg per step
-    const arcLift = 2.6;                             // px lift per step away from center
+    // Wider spacing to reduce overlap on mobile.
+    const spreadXBase = n <= 6 ? 30 : n <= 8 ? 26 : 22; // px between cards
+    const spreadX = spreadXBase + (isMobilePortrait ? 10 : 0);
+
+    const anglePerBase = n <= 6 ? 5 : n <= 8 ? 4 : 3;   // deg per step
+    const anglePer = Math.max(1.5, anglePerBase - (isMobilePortrait ? 1.2 : 0));
+
+    const arcLift = isMobilePortrait ? 1.8 : 2.6;       // px lift per step away from center
 
     state.hand.forEach((c, i) => {
       const cardEl = ui.handCardEls.get(c.id);

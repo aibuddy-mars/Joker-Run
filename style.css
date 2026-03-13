@@ -172,7 +172,7 @@ button.ghost{background:transparent}
   filter: brightness(1.03) drop-shadow(0 8px 18px rgba(0,0,0,.28));
 }
 .handFan .cardSlot .card.selected{
-  --lift: -14px;
+  --lift: -12px;
   filter: brightness(1.04) drop-shadow(0 14px 26px rgba(0,0,0,.35));
 }
 
@@ -196,6 +196,14 @@ button.ghost{background:transparent}
 }
 .card:hover{transform: translateY(-2px) scale(1.01)}
 .card.selected{outline:2px solid var(--accent); box-shadow:0 0 0 4px rgba(124,92,255,.22); transform: translateY(-6px) scale(1.03)}
+
+/* In fan-hand mode, never override the fan transform (prevents selected card "jumping" / heavy overlap) */
+.handFan .card:hover,
+.handFan .card.selected{
+  transform:
+    translate3d(-50%, calc(var(--y, 0px) + var(--lift, 0px)), 0)
+    rotate(var(--a, 0deg));
+}
 
 .cardInner{
   position:absolute;
