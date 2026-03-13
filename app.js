@@ -637,7 +637,16 @@ function renderHand({ animateDeal = true } = {}){
     const isMobilePortrait = window.matchMedia && window.matchMedia('(max-width: 720px) and (orientation: portrait)').matches;
 
     const spreadXBase = n <= 6 ? 30 : n <= 8 ? 26 : 22; // px between cards
-    const spreadX = spreadXBase + (isMobilePortrait ? 10 : 0);
+
+    // On iOS portrait, compute a spread that guarantees the whole fan fits in viewport.
+    const slotW = isMobilePortrait ? 90 : 96;
+    const handW = el.hand?.getBoundingClientRect?.().width || el.hand?.clientWidth || 0;
+    const vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth || 0) || handW || 0;
+    const safeW = Math.max(0, (handW || vw) - 24); // keep some side padding
+    const maxSpreadToFit = (n > 1 && safeW) ? (safeW - slotW) / (n - 1) : spreadXBase;
+    const spreadX = isMobilePortrait
+      ? Math.max(12, Math.min(spreadXBase + 10, maxSpreadToFit))
+      : spreadXBase;
 
     const anglePerBase = n <= 6 ? 5 : n <= 8 ? 4 : 3;   // deg per step
     const anglePer = Math.max(1.5, anglePerBase - (isMobilePortrait ? 1.2 : 0));
@@ -653,11 +662,7 @@ function renderHand({ animateDeal = true } = {}){
       const a = t * anglePer;
       const y = Math.abs(t) * arcLift;
 
-      // Clamp X so the fan never overflows the viewport/container (iOS portrait can exaggerate widths)
-      const slotW = isMobilePortrait ? 90 : 96;
-      const handW = el.hand?.getBoundingClientRect?.().width || el.hand?.clientWidth || 0;
-      const vw = Math.min(document.documentElement.clientWidth || 0, window.innerWidth || 0) || handW || 0;
-      const safeW = Math.max(0, (handW || vw) - 24); // keep some side padding
+      // Extra safety clamp (should rarely trigger after spreadX-to-fit)
       const maxX = safeW ? Math.max(0, (safeW - slotW) / 2) : 180;
       x = Math.max(-maxX, Math.min(maxX, x));
 
