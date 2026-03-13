@@ -512,7 +512,8 @@ button.ghost{background:transparent}
 
 /* Mobile portrait tuning: avoid overlap, keep actions near hand */
 @media (max-width: 720px) and (orientation: portrait){
-  body{ padding-bottom: 152px; }
+  /* extra space for the fixed bottom action bar so it won't cover joker sell buttons */
+  body{ padding-bottom: 220px; }
   /* prevent horizontal scrollbars on iOS (use global overflow-x hidden instead; keep table visible so lifted cards aren't clipped) */
 
   .topBar{ padding: 10px 12px 6px; gap: 8px; }
@@ -563,11 +564,11 @@ button.ghost{background:transparent}
     z-index: 80;
   }
   /* 5 buttons on mobile: allow 2 rows */
-  .actions button{ flex: 1 0 46%; padding: 10px 10px; }
+  .actions button{ flex: 1 0 46%; padding: 11px 10px; min-height: 44px; }
   .actions button.primary{ flex-basis: 100%; }
 
   /* Toast sits above the fixed action bar */
-  .toastWrap{ bottom: 164px; }
+  .toastWrap{ bottom: 232px; }
 
   /* Slightly smaller lift on portrait to avoid covering the log */
   .handFan .cardSlot .card.selected{ --lift: -14px; }

@@ -672,11 +672,11 @@ function renderHand({ animateDeal = true } = {}){
       const maxX = safeW ? Math.max(0, (safeW - slotW) / 2) : 180;
       x = Math.max(-maxX, Math.min(maxX, x));
 
-      // Mobile hitbox: match the exposed strip width (DouDiZhu feel).
-      // Rightmost card is fully clickable; others only their exposed left strip.
+      // Exposed-strip hitbox (DouDiZhu feel): rightmost card is fully clickable;
+      // others only their exposed left strip. Enable on both PC & mobile to avoid mis-clicks.
       const isLast = i === n - 1;
-      const hitW = isMobilePortrait ? (isLast ? slotW : Math.max(18, Math.floor(spreadX))) : slotW;
-      const hitShift = (!isLast && isMobilePortrait) ? -((slotW - hitW) / 2) : 0; // shift hitbox to the exposed (left) side
+      const hitW = isLast ? slotW : Math.max(34, Math.floor(spreadX));
+      const hitShift = !isLast ? -((slotW - hitW) / 2) : 0; // shift hitbox to the exposed (left) side
 
       if (slotEl){
         slotEl.style.setProperty('--hitW', `${hitW}px`);
