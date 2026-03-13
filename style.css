@@ -148,7 +148,7 @@ button.ghost{background:transparent}
   height: 140px; /* slightly larger than card (120px) */
   transform: translateX(calc(-50% + var(--x, 0px)));
 }
-.handFan .cardSlot:hover{ z-index: 999; }
+.handFan .cardSlot:hover{ z-index: auto; }
 
 .handFan .card{
   position:absolute;
@@ -393,8 +393,8 @@ button.ghost{background:transparent}
 .suit{font-weight:900; font-size:14px; opacity:.9}
 .small{font-size:11px; color:rgba(0,0,0,.55)}
 
-/* dealing animation */
-@keyframes dealIn{from{opacity:0; transform: translateY(16px) scale(.96)}to{opacity:1; transform: translateY(0) scale(1)}}
+/* dealing animation (opacity-only to avoid overriding fan transforms) */
+@keyframes dealIn{from{opacity:0; filter: blur(.2px)}to{opacity:1; filter: blur(0)}}
 .card.deal{opacity:0; animation: dealIn 220ms ease forwards; animation-delay: var(--d, 0ms)}
 
 /* play/discard animation */
