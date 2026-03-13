@@ -172,8 +172,24 @@ button.ghost{background:transparent}
   filter: brightness(1.03) drop-shadow(0 8px 18px rgba(0,0,0,.28));
 }
 .handFan .cardSlot .card.selected{
-  --lift: -12px;
+  --lift: -18px; /* classic "picked" feel */
   filter: brightness(1.04) drop-shadow(0 14px 26px rgba(0,0,0,.35));
+}
+
+/* When some cards are selected, slightly dim unselected cards but keep them visible */
+.handFan.hasSelection .cardSlot .card:not(.selected){
+  opacity: .92;
+  filter: brightness(.98) saturate(.95);
+}
+
+/* Pick-up bounce (classic card game feel) */
+@keyframes pickUp {
+  0%   { transform: translate3d(-50%, calc(var(--y, 0px) + 0px), 0) rotate(var(--a, 0deg)) scale(1); }
+  60%  { transform: translate3d(-50%, calc(var(--y, 0px) + var(--lift, 0px) - 4px), 0) rotate(var(--a, 0deg)) scale(1.03); }
+  100% { transform: translate3d(-50%, calc(var(--y, 0px) + var(--lift, 0px)), 0) rotate(var(--a, 0deg)) scale(1.02); }
+}
+.handFan .cardSlot .card.selected{
+  animation: pickUp 140ms cubic-bezier(.2,.9,.2,1);
 }
 
 @media (max-width: 720px){
@@ -496,7 +512,7 @@ button.ghost{background:transparent}
 
 /* Mobile portrait tuning: avoid overlap, keep actions near hand */
 @media (max-width: 720px) and (orientation: portrait){
-  body{ padding-bottom: 92px; }
+  body{ padding-bottom: 152px; }
 
   .topBar{ padding: 10px 12px 6px; gap: 8px; }
   .title{ font-size: 16px; }
@@ -550,5 +566,8 @@ button.ghost{background:transparent}
   .actions button.primary{ flex-basis: 100%; }
 
   /* Toast sits above the fixed action bar */
-  .toastWrap{ bottom: 104px; }
+  .toastWrap{ bottom: 164px; }
+
+  /* Slightly smaller lift on portrait to avoid covering the log */
+  .handFan .cardSlot .card.selected{ --lift: -14px; }
 }

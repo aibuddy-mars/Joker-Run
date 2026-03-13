@@ -541,6 +541,7 @@ function renderShop(){
 function renderHand({ animateDeal = true } = {}){
   ui.handCardEls.clear();
   el.hand.innerHTML = '';
+  el.hand.classList.toggle('hasSelection', state.selected.size > 0);
 
   state.hand.forEach((c, idx) => {
     // Slot: stable hitbox (prevents hover flicker when cards overlap)
@@ -640,19 +641,40 @@ function renderHand({ animateDeal = true } = {}){
 
     const arcLift = isMobilePortrait ? 1.8 : 2.6;       // px lift per step away from center
 
+    const selectedIdx = state.hand
+      .map((c, i) => state.selected.has(c.id) ? i : -1)
+      .filter(i => i >= 0);
+
+    const pushUnit = isMobilePortrait ? 8 : 4; // px
+    const pushCap = isMobilePortrait ? 28 : 18;
+
     state.hand.forEach((c, i) => {
       const cardEl = ui.handCardEls.get(c.id);
       if (!cardEl) return;
       const slotEl = cardEl.parentElement; // .cardSlot
       const t = i - mid;
-      const x = t * spreadX;
+
+      // Base fan layout
+      let x = t * spreadX;
       const a = t * anglePer;
       const y = Math.abs(t) * arcLift;
+
+      // If there are selected cards, create small gaps so selected cards don't cover neighbors.
+      if (selectedIdx.length){
+        let extra = 0;
+        for (const s of selectedIdx){
+          if (i < s) extra -= pushUnit;
+          else if (i > s) extra += pushUnit;
+        }
+        extra = Math.max(-pushCap, Math.min(pushCap, extra));
+        x += extra;
+      }
 
       // layout vars live on the slot (stable hitbox)
       if (slotEl){
         slotEl.style.setProperty('--x', `${x}px`);
-        slotEl.style.zIndex = String(200 + Math.floor(100 - Math.abs(t) * 5) + i);
+        const baseZ = 200 + Math.floor(100 - Math.abs(t) * 5) + i;
+        slotEl.style.zIndex = String(baseZ + (state.selected.has(c.id) ? 200 : 0));
       }
 
       // visual vars live on the card
