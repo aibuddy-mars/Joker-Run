@@ -103,7 +103,7 @@ button.ghost{background:transparent}
   box-shadow: 0 28px 80px rgba(0,0,0,.35);
   padding:16px;
   position:relative;
-  overflow:hidden;
+  overflow:visible; /* avoid clipping lifted/animated cards on mobile */
 }
 .table::before{
   content:"";

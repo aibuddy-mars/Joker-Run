@@ -601,6 +601,12 @@ function renderHand({ animateDeal = true } = {}){
       setTimeout(()=>{
         div.classList.remove('flipped');
       }, idx * 26 + 90);
+
+      // After the deal-in animation finishes, drop the "deal" class so future interactions
+      // can't accidentally re-trigger opacity/animation quirks on some browsers.
+      setTimeout(()=>{
+        div.classList.remove('deal');
+      }, idx * 26 + 320);
     }
 
     const toggle = () => {
