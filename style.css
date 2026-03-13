@@ -148,7 +148,6 @@ button.ghost{background:transparent}
   height: 140px; /* slightly larger than card (120px) */
   transform: translateX(calc(-50% + var(--x, 0px)));
 }
-.handFan .cardSlot:hover{ z-index: auto; }
 
 .handFan .card{
   position:absolute;
